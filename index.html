@@ -1,198 +1,755 @@
-:<!DOCTYPE html>
-<!-- This tells the browser to expect an HTML5 document -->
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- The head section contains information about the page that isn't directly displayed -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Basic Portfolio</title>
-
-    <!-- CSS is placed inside the <style> tags to make the page look nice -->
+    <meta name="description" content="Georgie Leslie - Front-end developer creating thoughtful, polished digital experiences.">
+    <title>Georgie Leslie | Front-end Developer</title>
     <style>
-        /* 1. GENERAL STYLES */
-        /* Targets the entire visible body of the webpage */
+        :root {
+            --ink: #10131a;
+            --muted: #656b78;
+            --paper: #f7f7f4;
+            --white: #ffffff;
+            --lime: #d6ff3f;
+            --violet: #7457ff;
+            --line: rgba(16, 19, 26, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: Arial, sans-serif; /* Uses Arial, or a basic sans-serif font if Arial is missing */
-            background-color: #f4f4f9; /* A very light grey/blue background color */
-            color: #333333; /* Dark grey text for readability */
-            margin: 0; /* Removes default browser spacing around the edges */
-            padding: 0; /* Removes default browser padding */
+            margin: 0;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* 2. HEADER STYLES */
-        /* Styles for the top section containing your name */
-        header {
-            background-color: #2c3e50; /* Dark blue background */
-            color: white; /* White text */
-            text-align: center; /* Centers the text horizontally */
-            padding: 40px 20px; /* Adds space inside the header: 40px top/bottom, 20px left/right */
+        a {
+            color: inherit;
+            text-decoration: none;
         }
 
-        header h1 {
-            margin: 0; /* Removes default spacing around the heading */
-            font-size: 36px; /* Makes the name nice and big */
+        .site-header {
+            position: fixed;
+            z-index: 20;
+            top: 18px;
+            left: 50%;
+            width: min(1120px, calc(100% - 36px));
+            height: 68px;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 10px 8px 22px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.86);
+            box-shadow: 0 12px 40px rgba(25, 28, 38, 0.08);
+            backdrop-filter: blur(16px);
         }
 
-        header p {
-            margin-top: 10px;
-            font-size: 18px;
-            color: #bdc3c7; /* Lighter grey/blue color for the subtitle */
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
         }
 
-        /* 3. MAIN CONTENT STYLES */
-        /* Styles for the section wrapping our skills */
-        main {
-            padding: 40px 20px; /* Adds breathing room around the content */
-            max-width: 1000px; /* Prevents the content from stretching too wide on large screens */
-            margin: 0 auto; /* Centers the main block on the page (0 top/bottom, auto left/right) */
-        }
-
-        /* 4. FLEXBOX CONTAINER FOR CARDS */
-        /* This is the container where JavaScript will place the cards */
-        #skills-container {
-            display: flex; /* Flexbox makes it easy to align items side-by-side */
-            flex-wrap: wrap; /* Allows cards to wrap to the next line if there isn't enough room */
-            gap: 20px; /* Creates a 20 pixel gap between all the cards */
-            justify-content: center; /* Centers the cards horizontally within the container */
-        }
-
-        /* 5. INDIVIDUAL CARD STYLES */
-        /* These rules will apply to the divs we create with JavaScript */
-        .skill-card {
-            position: relative;
-            background-color: white;
-            border-radius: 8px; /* Rounds the corners of the cards */
-            padding: 20px;
-            width: 250px; /* Gives each card a fixed width */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a soft drop shadow behind the card */
-            text-align: center;
-            border-top: 5px solid #3498db; /* Adds a nice blue line at the top of each card */
-        }
-
-        .toggle-icon {
-            position: absolute;
-            top: 14px;
-            right: 16px;
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #64748b;
-            line-height: 1; /* Prevents unwanted vertical spacing */
-        }
-
-        .skill-card h3 {
-            margin-top: 0;
-            color: #2c3e50;
-        }
-
-        .skill-card p {
+        .brand-mark {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            background: var(--ink);
+            color: var(--lime);
             font-size: 14px;
-            color: #666666;
-            line-height: 1.5; /* Adds a bit of space between lines of text */
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 26px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .nav-links a:not(.nav-cta) {
+            transition: opacity 180ms ease;
+        }
+
+        .nav-links a:not(.nav-cta):hover {
+            opacity: 0.55;
+        }
+
+        .nav-cta {
+            padding: 14px 18px;
+            border-radius: 12px;
+            background: var(--ink);
+            color: var(--white);
+        }
+
+        main {
+            overflow: hidden;
+        }
+
+        .hero {
+            min-height: 780px;
+            display: grid;
+            grid-template-columns: 1.12fr 0.88fr;
+            align-items: center;
+            gap: 60px;
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 150px 0 90px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 20px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #62c98c;
+            box-shadow: 0 0 0 5px rgba(98, 201, 140, 0.13);
+        }
+
+        h1 {
+            max-width: 760px;
+            margin: 0;
+            font-size: clamp(64px, 8vw, 112px);
+            line-height: 0.86;
+            letter-spacing: -0.075em;
+        }
+
+        h1 .accent {
+            color: var(--violet);
+            font-family: Georgia, "Times New Roman", serif;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .hero-copy {
+            max-width: 570px;
+            margin: 30px 0 34px;
+            color: var(--muted);
+            font-size: clamp(17px, 2vw, 21px);
+            line-height: 1.65;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 54px;
+            padding: 0 20px;
+            border: 1px solid var(--ink);
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 800;
+            transition: transform 180ms ease, box-shadow 180ms ease;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(16, 19, 26, 0.12);
+        }
+
+        .button-primary {
+            background: var(--lime);
+        }
+
+        .button-secondary {
+            border-color: var(--line);
+            background: var(--white);
+        }
+
+        .portrait-wrap {
+            position: relative;
+            min-height: 510px;
+        }
+
+        .portrait-card {
+            position: absolute;
+            inset: 20px 10px 20px 40px;
+            overflow: hidden;
+            border-radius: 220px 220px 32px 32px;
+            background:
+                radial-gradient(circle at 68% 24%, rgba(214, 255, 63, 0.95) 0 8%, transparent 8.5%),
+                linear-gradient(145deg, #8971ff 0%, #4d38ba 72%);
+            box-shadow: 0 30px 70px rgba(78, 57, 168, 0.22);
+        }
+
+        .portrait-card::before {
+            content: "GL";
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.88);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 280px;
+            font-style: italic;
+            line-height: 1;
+        }
+
+        .orb {
+            position: absolute;
+            z-index: 2;
+            display: grid;
+            place-items: center;
+            width: 116px;
+            height: 116px;
+            border: 8px solid var(--paper);
+            border-radius: 50%;
+            background: var(--lime);
+            color: var(--ink);
+            font-size: 13px;
+            font-weight: 900;
+            text-align: center;
+            text-transform: uppercase;
+            transform: rotate(-8deg);
+        }
+
+        .orb-top {
+            top: 0;
+            right: -14px;
+        }
+
+        .orb-bottom {
+            bottom: 0;
+            left: 0;
+            background: var(--white);
+            transform: rotate(7deg);
+        }
+
+        .section {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 100px 0;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            margin-bottom: 34px;
+        }
+
+        .section-heading h2 {
+            max-width: 650px;
+            margin: 0;
+            font-size: clamp(42px, 6vw, 72px);
+            line-height: 0.95;
+            letter-spacing: -0.055em;
+        }
+
+        .section-heading p {
+            max-width: 300px;
+            margin: 0 0 6px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .skills-section {
+            border-top: 1px solid var(--line);
+        }
+
+        #skills-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .skill-card {
+            min-height: 270px;
+            padding: 24px;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            background: var(--white);
+            cursor: pointer;
+            transition: transform 220ms ease, background 220ms ease, color 220ms ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-6px);
         }
 
         .skill-card.selected {
-            border: 2px solid #2563eb;
-            background-color: #f0f7ff;
-            transform: scale(1.03);
-}
+            background: var(--ink);
+            color: var(--white);
+        }
+
+        .skill-card.selected p {
+            color: rgba(255, 255, 255, 0.68);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+
+        .skill-number {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .toggle-icon {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            font-size: 20px;
+            transition: transform 220ms ease;
+        }
+
+        .skill-card.selected .toggle-icon {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: var(--lime);
+            color: var(--ink);
+            transform: rotate(45deg);
+        }
+
+        .skill-card h3 {
+            margin: 92px 0 14px;
+            font-size: 24px;
+            letter-spacing: -0.04em;
+        }
+
+        .skill-card p {
+            display: none;
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .skill-card.selected p {
+            display: block;
+        }
+
+        .selected h3 {
+            margin-top: 46px;
+        }
+
+        .project-band {
+            width: 100%;
+            background: var(--ink);
+            color: var(--white);
+        }
+
+        .project-inner {
+            display: grid;
+            grid-template-columns: 0.72fr 1.28fr;
+            gap: 60px;
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 110px 0;
+        }
+
+        .project-label {
+            color: var(--lime);
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .project-inner h2 {
+            margin: 22px 0 0;
+            font-size: clamp(48px, 7vw, 86px);
+            line-height: 0.9;
+            letter-spacing: -0.065em;
+        }
+
+        .project-inner h2 em {
+            color: #a99cff;
+            font-family: Georgia, "Times New Roman", serif;
+            font-weight: 500;
+        }
+
+        .project-list {
+            border-top: 1px solid rgba(255, 255, 255, 0.16);
+        }
+
+        .project-item {
+            display: grid;
+            grid-template-columns: 52px 1fr auto;
+            align-items: center;
+            gap: 18px;
+            min-height: 112px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+            transition: padding 180ms ease;
+        }
+
+        .project-item:hover {
+            padding-left: 12px;
+        }
+
+        .project-index {
+            color: rgba(255, 255, 255, 0.48);
+            font-size: 12px;
+        }
+
+        .project-name {
+            font-size: clamp(22px, 3vw, 34px);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+        }
+
+        .project-arrow {
+            display: grid;
+            place-items: center;
+            width: 46px;
+            height: 46px;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            border-radius: 50%;
+        }
+
+        .contact-section {
+            text-align: center;
+        }
+
+        .contact-section h2 {
+            max-width: 900px;
+            margin: 0 auto 32px;
+            font-size: clamp(54px, 9vw, 110px);
+            line-height: 0.86;
+            letter-spacing: -0.075em;
+        }
+
+        .contact-section h2 em {
+            color: var(--violet);
+            font-family: Georgia, "Times New Roman", serif;
+            font-weight: 500;
+        }
+
+        footer {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 28px 0 38px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 700ms ease, transform 700ms ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 1180px) {
+            .hero,
+            .section,
+            .project-inner,
+            footer,
+            .site-header {
+                max-width: none;
+                width: calc(100% - 48px);
+            }
+
+            .hero {
+                min-height: 720px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .nav-links a:not(.nav-cta) {
+                display: none;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                padding-top: 140px;
+            }
+
+            .portrait-wrap {
+                width: min(520px, 100%);
+                min-height: 470px;
+                margin: 0 auto;
+            }
+
+            #skills-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .section-heading {
+                align-items: start;
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            .project-inner {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .site-header {
+                top: 10px;
+                width: calc(100% - 20px);
+                height: 62px;
+                padding-left: 12px;
+            }
+
+            .brand-name {
+                display: none;
+            }
+
+            .hero,
+            .section,
+            .project-inner,
+            footer {
+                width: calc(100% - 32px);
+            }
+
+            .hero {
+                min-height: auto;
+                padding: 120px 0 60px;
+            }
+
+            h1 {
+                font-size: 58px;
+            }
+
+            .hero-actions {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .portrait-wrap {
+                min-height: 390px;
+            }
+
+            .portrait-card {
+                inset: 18px 12px 18px 26px;
+            }
+
+            .portrait-card::before {
+                font-size: 220px;
+            }
+
+            .orb {
+                width: 92px;
+                height: 92px;
+                font-size: 11px;
+            }
+
+            .section {
+                padding: 70px 0;
+            }
+
+            #skills-container {
+                grid-template-columns: 1fr;
+            }
+
+            .skill-card {
+                min-height: 220px;
+            }
+
+            .skill-card h3 {
+                margin-top: 48px;
+            }
+
+            .project-inner {
+                padding: 78px 0;
+            }
+
+            .project-item {
+                grid-template-columns: 36px 1fr auto;
+            }
+
+            footer {
+                gap: 12px;
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
-
-    <!-- VISIBLE HTML CONTENT -->
-
-    <!-- Header containing your name and a brief intro -->
-    <header>
-        <h1>Your Name</h1>
-        <p>A beginner web developer learning to code</p>
+    <header class="site-header">
+        <a class="brand" href="#top" aria-label="Go to top">
+            <span class="brand-mark">GL</span>
+            <span class="brand-name">Georgie Leslie</span>
+        </a>
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="#skills">Skills</a>
+            <a href="#work">Work</a>
+            <a class="nav-cta" href="#contact">Let's talk</a>
+        </nav>
     </header>
 
-    <!-- Main area for the page content -->
-    <main>
-        <h2 style="text-align: center; margin-bottom: 30px;">My Skills</h2>
-        
-        <!-- This is the empty container. It has an ID so JavaScript can find it easily -->
-        <div id="skills-container">
-            <!-- JavaScript will automatically insert the skill cards here! -->
-        </div>
+    <main id="top">
+        <section class="hero">
+            <div class="hero-content reveal">
+                <div class="eyebrow">Available for projects</div>
+                <h1>Ideas into <span class="accent">digital.</span></h1>
+                <p class="hero-copy">I am Georgie, a front-end developer turning thoughtful ideas into clear, engaging experiences for the web.</p>
+                <div class="hero-actions">
+                    <a class="button button-primary" href="#work">Explore my work <span aria-hidden="true">↗</span></a>
+                    <a class="button button-secondary" href="#contact">Get in touch</a>
+                </div>
+            </div>
+
+            <div class="portrait-wrap reveal" aria-label="Creative profile illustration">
+                <div class="orb orb-top">Front-end</div>
+                <div class="portrait-card"></div>
+                <div class="orb orb-bottom">Always curious</div>
+            </div>
+        </section>
+
+        <section class="section skills-section" id="skills">
+            <div class="section-heading reveal">
+                <h2>Tools I use to build.</h2>
+                <p>Tap a card to explore the skills behind every project.</p>
+            </div>
+            <div id="skills-container"></div>
+        </section>
+
+        <section class="project-band" id="work">
+            <div class="project-inner">
+                <div class="reveal">
+                    <div class="project-label">Selected practice</div>
+                    <h2>Built with <em>purpose.</em></h2>
+                </div>
+                <div class="project-list reveal">
+                    <div class="project-item">
+                        <span class="project-index">01</span>
+                        <span class="project-name">Responsive websites</span>
+                        <span class="project-arrow" aria-hidden="true">↗</span>
+                    </div>
+                    <div class="project-item">
+                        <span class="project-index">02</span>
+                        <span class="project-name">Interactive experiences</span>
+                        <span class="project-arrow" aria-hidden="true">↗</span>
+                    </div>
+                    <div class="project-item">
+                        <span class="project-index">03</span>
+                        <span class="project-name">Clean, usable interfaces</span>
+                        <span class="project-arrow" aria-hidden="true">↗</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section contact-section" id="contact">
+            <div class="reveal">
+                <div class="eyebrow">Start a conversation</div>
+                <h2>Have an idea? <em>Let's make it real.</em></h2>
+                <a class="button button-primary" href="mailto:hello@example.com">hello@example.com <span aria-hidden="true">↗</span></a>
+            </div>
+        </section>
     </main>
 
-    <!-- JAVASCRIPT LOGIC -->
-    <!-- The script tag contains the code that makes the page dynamic -->
+    <footer>
+        <span>&copy; 2026 Georgie Leslie</span>
+        <span>Built with HTML, CSS &amp; JavaScript</span>
+    </footer>
+
     <script>
-        // 1. DEFINE THE DATA
-        // This is an Array (a list) of Objects. Each object represents one skill.
-        // You can easily add, edit, or delete items in this list to update your portfolio.
         const mySkills = [
             {
                 name: "HTML",
-                description: "The building blocks of the web. I use this to structure my websites."
+                description: "Semantic, accessible structure that gives every experience a solid foundation."
             },
             {
                 name: "CSS",
-                description: "The styling language. I use this to add colors, layouts, and make things look pretty."
+                description: "Responsive layouts, thoughtful type, and polished details that feel effortless."
             },
             {
                 name: "JavaScript",
-                description: "The brain of the website. I am learning this to make my websites interactive."
+                description: "Interactive behavior that makes interfaces useful, memorable, and human."
             },
             {
                 name: "Problem Solving",
-                description: "Breaking down complex problems into smaller, manageable steps."
+                description: "A practical approach to breaking complexity into clear, achievable steps."
             }
         ];
 
-        // 2. FIND THE CONTAINER
-        // We tell JavaScript to look into the HTML document and find the element with the ID 'skills-container'
         const container = document.getElementById("skills-container");
 
-        // 3. LOOP THROUGH THE DATA AND CREATE CARDS
-        // The .forEach() method runs a block of code for every item in our mySkills list.
-        mySkills.forEach(function(skill) {
-            
-            // a) Create a new empty <div> element
-            const cardElement = document.createElement("div");
-            
-            // b) Give the new <div> a class name so our CSS can style it
-            cardElement.className = "skill-card";
-            
-            // c) Add the HTML content inside the card
-            // We use the ${skill.name} and ${skill.description} to insert the data from our object
-            cardElement.innerHTML = `
-            <span class="toggle-icon">+</span>    
-            <h3>${skill.name}</h3>
-              
+        mySkills.forEach(function(skill, index) {
+            const card = document.createElement("article");
+            card.className = "skill-card reveal";
+            card.tabIndex = 0;
+            card.setAttribute("role", "button");
+            card.setAttribute("aria-expanded", "false");
+            card.innerHTML = `
+                <div class="card-top">
+                    <span class="skill-number">0${index + 1}</span>
+                    <span class="toggle-icon" aria-hidden="true">+</span>
+                </div>
+                <h3>${skill.name}</h3>
+                <p>${skill.description}</p>
             `;
-            // Inside your loop:
-            const details = document.createElement('p');
-            details.textContent = skill.description;
-            details.style.display = 'none'; // Initially hidden
 
-            cardElement.appendChild(details);
-
-            cardElement.addEventListener('click', function() {
-            const icon = cardElement.querySelector('.toggle-icon');
-            const isHidden = details.style.display === 'none';
-            details.style.display = isHidden ? 'block' : 'none';
-            cardElement.classList.toggle('selected');
-            if (isHidden) {
-            details.style.display = 'block';
-            icon.textContent = '-';
-            } else {
-            details.style.display = 'none';
-            icon.textContent = '+';
+            function toggleCard() {
+                const isSelected = card.classList.toggle("selected");
+                card.setAttribute("aria-expanded", String(isSelected));
             }
 
+            card.addEventListener("click", toggleCard);
+            card.addEventListener("keydown", function(event) {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    toggleCard();
+                }
             });
-            // d) Finally, take this newly created card and put it inside the container on the page
-            container.appendChild(cardElement);
+            container.appendChild(card);
+        });
 
-        
-            
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll(".reveal").forEach(function(element) {
+            observer.observe(element);
         });
     </script>
-<footer>
-        <p>&copy; 2026 My Website - Built with HTML, CSS, and JavaScript by Georgie Leslie. All rights reserved.</p>
-    </footer>
 </body>
 </html>
