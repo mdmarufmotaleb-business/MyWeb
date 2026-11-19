@@ -1,0 +1,198 @@
+:<!DOCTYPE html>
+<!-- This tells the browser to expect an HTML5 document -->
+<html lang="en">
+<head>
+    <!-- The head section contains information about the page that isn't directly displayed -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Basic Portfolio</title>
+
+    <!-- CSS is placed inside the <style> tags to make the page look nice -->
+    <style>
+        /* 1. GENERAL STYLES */
+        /* Targets the entire visible body of the webpage */
+        body {
+            font-family: Arial, sans-serif; /* Uses Arial, or a basic sans-serif font if Arial is missing */
+            background-color: #f4f4f9; /* A very light grey/blue background color */
+            color: #333333; /* Dark grey text for readability */
+            margin: 0; /* Removes default browser spacing around the edges */
+            padding: 0; /* Removes default browser padding */
+        }
+
+        /* 2. HEADER STYLES */
+        /* Styles for the top section containing your name */
+        header {
+            background-color: #2c3e50; /* Dark blue background */
+            color: white; /* White text */
+            text-align: center; /* Centers the text horizontally */
+            padding: 40px 20px; /* Adds space inside the header: 40px top/bottom, 20px left/right */
+        }
+
+        header h1 {
+            margin: 0; /* Removes default spacing around the heading */
+            font-size: 36px; /* Makes the name nice and big */
+        }
+
+        header p {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #bdc3c7; /* Lighter grey/blue color for the subtitle */
+        }
+
+        /* 3. MAIN CONTENT STYLES */
+        /* Styles for the section wrapping our skills */
+        main {
+            padding: 40px 20px; /* Adds breathing room around the content */
+            max-width: 1000px; /* Prevents the content from stretching too wide on large screens */
+            margin: 0 auto; /* Centers the main block on the page (0 top/bottom, auto left/right) */
+        }
+
+        /* 4. FLEXBOX CONTAINER FOR CARDS */
+        /* This is the container where JavaScript will place the cards */
+        #skills-container {
+            display: flex; /* Flexbox makes it easy to align items side-by-side */
+            flex-wrap: wrap; /* Allows cards to wrap to the next line if there isn't enough room */
+            gap: 20px; /* Creates a 20 pixel gap between all the cards */
+            justify-content: center; /* Centers the cards horizontally within the container */
+        }
+
+        /* 5. INDIVIDUAL CARD STYLES */
+        /* These rules will apply to the divs we create with JavaScript */
+        .skill-card {
+            position: relative;
+            background-color: white;
+            border-radius: 8px; /* Rounds the corners of the cards */
+            padding: 20px;
+            width: 250px; /* Gives each card a fixed width */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a soft drop shadow behind the card */
+            text-align: center;
+            border-top: 5px solid #3498db; /* Adds a nice blue line at the top of each card */
+        }
+
+        .toggle-icon {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #64748b;
+            line-height: 1; /* Prevents unwanted vertical spacing */
+        }
+
+        .skill-card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .skill-card p {
+            font-size: 14px;
+            color: #666666;
+            line-height: 1.5; /* Adds a bit of space between lines of text */
+        }
+
+        .skill-card.selected {
+            border: 2px solid #2563eb;
+            background-color: #f0f7ff;
+            transform: scale(1.03);
+}
+    </style>
+</head>
+<body>
+
+    <!-- VISIBLE HTML CONTENT -->
+
+    <!-- Header containing your name and a brief intro -->
+    <header>
+        <h1>Your Name</h1>
+        <p>A beginner web developer learning to code</p>
+    </header>
+
+    <!-- Main area for the page content -->
+    <main>
+        <h2 style="text-align: center; margin-bottom: 30px;">My Skills</h2>
+        
+        <!-- This is the empty container. It has an ID so JavaScript can find it easily -->
+        <div id="skills-container">
+            <!-- JavaScript will automatically insert the skill cards here! -->
+        </div>
+    </main>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <!-- The script tag contains the code that makes the page dynamic -->
+    <script>
+        // 1. DEFINE THE DATA
+        // This is an Array (a list) of Objects. Each object represents one skill.
+        // You can easily add, edit, or delete items in this list to update your portfolio.
+        const mySkills = [
+            {
+                name: "HTML",
+                description: "The building blocks of the web. I use this to structure my websites."
+            },
+            {
+                name: "CSS",
+                description: "The styling language. I use this to add colors, layouts, and make things look pretty."
+            },
+            {
+                name: "JavaScript",
+                description: "The brain of the website. I am learning this to make my websites interactive."
+            },
+            {
+                name: "Problem Solving",
+                description: "Breaking down complex problems into smaller, manageable steps."
+            }
+        ];
+
+        // 2. FIND THE CONTAINER
+        // We tell JavaScript to look into the HTML document and find the element with the ID 'skills-container'
+        const container = document.getElementById("skills-container");
+
+        // 3. LOOP THROUGH THE DATA AND CREATE CARDS
+        // The .forEach() method runs a block of code for every item in our mySkills list.
+        mySkills.forEach(function(skill) {
+            
+            // a) Create a new empty <div> element
+            const cardElement = document.createElement("div");
+            
+            // b) Give the new <div> a class name so our CSS can style it
+            cardElement.className = "skill-card";
+            
+            // c) Add the HTML content inside the card
+            // We use the ${skill.name} and ${skill.description} to insert the data from our object
+            cardElement.innerHTML = `
+            <span class="toggle-icon">+</span>    
+            <h3>${skill.name}</h3>
+              
+            `;
+            // Inside your loop:
+            const details = document.createElement('p');
+            details.textContent = skill.description;
+            details.style.display = 'none'; // Initially hidden
+
+            cardElement.appendChild(details);
+
+            cardElement.addEventListener('click', function() {
+            const icon = cardElement.querySelector('.toggle-icon');
+            const isHidden = details.style.display === 'none';
+            details.style.display = isHidden ? 'block' : 'none';
+            cardElement.classList.toggle('selected');
+            if (isHidden) {
+            details.style.display = 'block';
+            icon.textContent = '-';
+            } else {
+            details.style.display = 'none';
+            icon.textContent = '+';
+            }
+
+            });
+            // d) Finally, take this newly created card and put it inside the container on the page
+            container.appendChild(cardElement);
+
+        
+            
+        });
+    </script>
+<footer>
+        <p>&copy; 2026 My Website - Built with HTML, CSS, and JavaScript by Georgie Leslie. All rights reserved.</p>
+    </footer>
+</body>
+</html>
